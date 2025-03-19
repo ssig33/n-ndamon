@@ -85,8 +85,70 @@
       'お腹すいたのだ'
     ];
 
-    // マスコットがクリックされたときの処理
-    mascot.addEventListener('click', () => {
+    // ドラッグ関連の変数
+    let isDragging = false;
+    let startX, startY;
+
+    // マスコットのドラッグ開始時の処理
+    mascot.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      
+      // ドラッグ開始をメインプロセスに通知
+      if (window.electronAPI) {
+        window.electronAPI.startDrag();
+      }
+      
+      // カーソルスタイルを変更
+      mascot.style.cursor = 'grabbing';
+      
+      // マウスイベントをキャプチャ
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      
+      // デフォルトのドラッグ処理を防止
+      e.preventDefault();
+    });
+
+    // マウス移動時の処理
+    function handleMouseMove(e) {
+      if (!isDragging) return;
+      
+      // マウスの移動量を計算
+      const moveX = e.clientX - startX;
+      const moveY = e.clientY - startY;
+      
+      // 移動量が小さい場合は無視（微小な動きを防止）
+      if (Math.abs(moveX) < 2 && Math.abs(moveY) < 2) return;
+      
+      // ウィンドウを移動
+      if (window.electronAPI) {
+        window.electronAPI.moveWindow(moveX, moveY);
+      }
+      
+      // 開始位置を更新
+      startX = e.clientX;
+      startY = e.clientY;
+    }
+
+    // マウスボタンを離したときの処理
+    function handleMouseUp() {
+      isDragging = false;
+      
+      // カーソルスタイルを元に戻す
+      mascot.style.cursor = 'pointer';
+      
+      // イベントリスナーを削除
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    }
+
+    // マスコットがクリックされたときの処理（短いクリックの場合）
+    mascot.addEventListener('click', (e) => {
+      // ドラッグ中のクリックイベントは無視
+      if (isDragging) return;
+      
       // ランダムなメッセージを選択
       const randomIndex = Math.floor(Math.random() * messages.length);
       const message = messages[randomIndex];

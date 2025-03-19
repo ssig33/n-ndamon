@@ -61,6 +61,22 @@ ipcMain.on('quit-app', () => {
   app.quit();
 });
 
+// ウィンドウ移動のリクエストを処理
+ipcMain.on('move-window', (_event: any, { x, y }: { x: number, y: number }) => {
+  if (mainWindow) {
+    const [currentX, currentY] = mainWindow.getPosition();
+    mainWindow.setPosition(currentX + x, currentY + y);
+  }
+});
+
+// ドラッグ開始時のイベント処理
+ipcMain.on('start-drag', (_event: any) => {
+  if (mainWindow) {
+    // 必要に応じてここに処理を追加
+    // 例: ドラッグ中のウィンドウスタイルの変更など
+  }
+});
+
 // Electronの初期化が完了したら
 app.whenReady().then(() => {
   createWindow();
