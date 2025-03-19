@@ -15,8 +15,8 @@ let tray: any = null;
 function createWindow() {
   // ブラウザウィンドウを作成
   mainWindow = new BrowserWindow({
-    width: 200,
-    height: 200,
+    width: 700,
+    height: 650,
     frame: false,
     transparent: true,
     hasShadow: false, // 影を無効化
