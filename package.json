@@ -1,0 +1,50 @@
+{
+  "name": "n-ndamon",
+  "version": "1.0.0",
+  "description": "デスクトップマスコットエージェント",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "yarn build && yarn run electron",
+    "dev": "tsc && yarn run electron",
+    "build": "tsc",
+    "electron": "electron .",
+    "package": "electron-builder build --mac --win --linux",
+    "package:win": "electron-builder build --win",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^22.13.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "build": {
+    "appId": "com.example.n-ndamon",
+    "productName": "N-NDamon",
+    "files": [
+      "dist/**/*",
+      "assets/**/*",
+      "src/**/*.html"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "@types/electron": "^1.6.12",
+    "electron": "24.8.8",
+    "electron-builder": "^25.1.8"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+}
